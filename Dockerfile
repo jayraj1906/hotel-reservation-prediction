@@ -23,6 +23,8 @@ RUN curl -Ls https://astral.sh/uv/install.sh | sh
 
 # Copy the application code
 COPY . .
+ENV PYTHONPATH="/app:$PYTHONPATH"
+
 # Install dependencies and project
 RUN uv pip install --no-cache-dir --system .
 
