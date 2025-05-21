@@ -23,7 +23,7 @@ RUN curl -Ls https://astral.sh/uv/install.sh | sh
 COPY pyproject.toml uv.lock ./
 
 # Install dependencies and project
-RUN uv pip install --no-cache-dir .
+RUN uv pip install --no-cache-dir --system .
 # Copy the application code
 COPY . .
 
