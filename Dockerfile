@@ -12,9 +12,9 @@ WORKDIR /app
 # Install system dependencies required by LightGBM
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
+    && apt-get install -y curl build-essential\
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && apt-get install -y curl build-essential
+    && rm -rf /var/lib/apt/lists/* 
 
 
 # Install uv
