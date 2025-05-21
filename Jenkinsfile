@@ -20,6 +20,7 @@ pipeline{
                 script{
                     echo 'Setting up our virtual environment and installing dependencies....'
                     sh '''
+                    curl -Ls https://astral.sh/uv/install.sh | sh
                     uv ${VENV_DIR}
                     . ${VENV_DIR}/bin/activate
                     uv pip install .
