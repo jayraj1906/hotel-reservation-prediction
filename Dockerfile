@@ -20,12 +20,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Install uv
 RUN curl -Ls https://astral.sh/uv/install.sh | sh
 
-COPY pyproject.toml uv.lock ./
 
-# Install dependencies and project
-RUN uv pip install --no-cache-dir --system .
 # Copy the application code
 COPY . .
+# Install dependencies and project
+RUN uv pip install --no-cache-dir --system .
 
 
 # Train the model before running the application
