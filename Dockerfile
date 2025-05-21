@@ -5,6 +5,7 @@ FROM python:slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
+ENV PATH="/root/.local/bin:$PATH"
 # Set the working directory
 WORKDIR /app
 
@@ -12,16 +13,20 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libgomp1 \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && apt-get install -y curl build-essential
+
 
 # Install uv
 RUN curl -Ls https://astral.sh/uv/install.sh | sh
 
-# Copy the application code
-COPY . .
+COPY pyproject.toml uv.lock ./
 
 # Install dependencies and project
 RUN uv pip install --no-cache-dir .
+# Copy the application code
+COPY . .
+
 
 # Train the model before running the application
 RUN python pipeline/training_pipeline.py
