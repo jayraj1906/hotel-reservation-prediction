@@ -3,6 +3,9 @@ pipeline{
 
     environment {
         VENV_DIR = 'venv'
+        GCP_PROJECT = 'forward-script-457319-a7'
+        GCLOUD_PATH = '/var/jenkins_home/google-cloud-sdk/bin'
+
     }
 
     stages{
@@ -27,6 +30,25 @@ pipeline{
                     uv pip install .
                     '''
 
+                }
+            }
+        }
+
+        stage('Building and pushing docker image to gcr'){
+            steps{
+                withCredentials([file(credentialsId : 'gcp-key', variable : 'GOOGLE_APPLICATION_CREDENTIALS')]){
+                    script{
+                        echo 'Building and pushing docker image to gcr...'
+                        sh '''
+                        export PATH=$PATH:$(GCLOUD_PATH)
+
+                        gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
+                        gcloud config set project ${GCP_PROJECT}
+                        gcloud auth configure-docker --quite
+                        docker build -t gcr.io/${GCP_PROJECT}/hotel-reservation-prediction:v1
+                        docker push gcr.io/${GCP_PROJECT}/hotel-reservation-prediction:v1
+                        '''
+                    }
                 }
             }
         }
