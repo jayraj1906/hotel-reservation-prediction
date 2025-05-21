@@ -40,7 +40,7 @@ pipeline{
                     script{
                         echo 'Building and pushing docker image to gcr...'
                         sh """
-                        export PATH=$PATH:$(GCLOUD_PATH)
+                        export PATH=$PATH:${GCLOUD_PATH}
 
                         gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
                         gcloud config set project ${GCP_PROJECT}
