@@ -40,6 +40,7 @@ pipeline{
                         echo 'Running training pipeline...'
                         sh """
                         export GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
+                        export PYTHONPATH=$PWD
                         python3 pipeline/training_pipeline.py
                         """
                     }
