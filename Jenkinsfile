@@ -36,13 +36,15 @@ pipeline{
         stage('Train model') {
             steps {
                 withCredentials([file(credentialsId: 'gcp-key', variable: 'GOOGLE_APPLICATION_CREDENTIALS')]) {
-                    script {
-                        echo 'Running training pipeline...'
-                        sh """
-                        export GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
-                        export PYTHONPATH=$PWD
-                        python3 pipeline/training_pipeline.py
-                        """
+                    dir("${env.WORKSPACE}") {
+                        script {
+                            echo 'Running training pipeline...'
+                            sh """
+                            export GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS}
+                            export PYTHONPATH=$PWD
+                            python pipeline/training_pipeline.py
+                            """
+                        }
                     }
                 }
             }
