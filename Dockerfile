@@ -23,14 +23,14 @@ RUN curl -Ls https://astral.sh/uv/install.sh | sh
 
 # Copy the application code
 COPY . .
-ENV PYTHONPATH="/app"
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 # Install dependencies and project
 RUN uv pip install --no-cache-dir --system .
 
 
 # Train the model before running the application
-RUN python pipeline/training_pipeline.py
+#RUN python pipeline/training_pipeline.py
 
 # Expose the port that Flask will run on
 EXPOSE 5000
